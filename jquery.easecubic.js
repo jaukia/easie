@@ -17,9 +17,8 @@
  *
  * LICENCE INFORMATION FOR DERIVED FUNCTIONS:
  *
- * Functions CubicBezierAtPosition and  
- * CubicBezierAtTime are written by Christian Effenberger, 
- * and correspond 1:1 to WebKit project functions.
+ * Function cubicBezierAtTime is written by Christian Effenberger, 
+ * and corresponds 1:1 to the WebKit project function.
  * "WebCore and JavaScriptCore are available under the 
  * Lesser GNU Public License. WebKit is available under 
  * a BSD-style license."
@@ -67,14 +66,6 @@
         }
     }
 
-    // From: http://www.netzgesta.de/dev/cubic-bezier-timing-function.html
-    function cubicBezierAtPosition(t,P1x,P1y,P2x,P2y) {
-        var x,y,k=((1-t)*(1-t)*(1-t));
-        x=P1x*(3*t*t*(1-t))+P2x*(3*t*(1-t)*(1-t))+k;
-        y=P1y*(3*t*t*(1-t))+P2y*(3*t*(1-t)*(1-t))+k;
-        return {x:Math.abs(x),y:Math.abs(y)};
-    }
-    
     // From: http://www.netzgesta.de/dev/cubic-bezier-timing-function.html
     // 1:1 conversion to js from webkit source files
     // UnitBezier.h, WebCore_animation_AnimationBase.cpp
