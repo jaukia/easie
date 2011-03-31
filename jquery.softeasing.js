@@ -1,8 +1,8 @@
-// example of use $(elem).animate( {top: 100}, $.easecubic(.25,.1,.25,1) );
+// example of use $(elem).animate( {top: 100}, $.softeasing(.25,.1,.25,1) );
 
 /*
- * jquery.easecubic.js:
- * http://janne.aukia.com/easecubic
+ * jquery.softeasing.js:
+ * http://janne.aukia.com/softeasing
  *
  * Version history:
  * 0.01 xxx
@@ -30,7 +30,7 @@
 (function($) {
     "use strict";
 
-    $.easecubic = function(p1x,p1y,p2x,p2y,name) {
+    $.softeasing = function(p1x,p1y,p2x,p2y,name) {
         name = name || "cubic-"+Array.prototype.join.call(arguments,"-");
         if ( !$.easing[name] ) {
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
@@ -46,11 +46,11 @@
         return easingName;
     }
 
-    $.easecubic(0.0,0.0,1.0,1.0,  "cubic-linear");
-    $.easecubic(0.25,0.1,0.25,1.0,"cubic-ease");
-    $.easecubic(0.42,0.0,1.0,1.0, "cubic-ease-in");
-    $.easecubic(0.0,0.0,0.58,1.0, "cubic-ease-out");
-    $.easecubic(0.42,0.0,0.58,1.0,"cubic-ease-in-out");
+    $.softeasing(0.0,0.0,1.0,1.0,  "cubic-linear");
+    $.softeasing(0.25,0.1,0.25,1.0,"cubic-ease");
+    $.softeasing(0.42,0.0,1.0,1.0, "cubic-ease-in");
+    $.softeasing(0.0,0.0,0.58,1.0, "cubic-ease-out");
+    $.softeasing(0.42,0.0,0.58,1.0,"cubic-ease-in-out");
 
     function makeLookup(func,steps) {
         var i;
