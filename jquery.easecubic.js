@@ -33,7 +33,6 @@
 
     $.easecubic = function(p1x,p1y,p2x,p2y,name) {
         name = name || "cubic-"+Array.prototype.join.call(arguments,"-");
-        duration = duration || 1;
         if ( !$.easing[name] ) {
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
                 cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1);
@@ -45,7 +44,13 @@
         }
         return easingName;
     }
-    
+
+    $.easecubic(0.0,0.0,1.0,1.0,  "cubic-linear");
+    $.easecubic(0.25,0.1,0.25,1.0,"cubic-ease");
+    $.easecubic(0.42,0.0,1.0,1.0, "cubic-ease-in");
+    $.easecubic(0.0,0.0,0.58,1.0, "cubic-ease-out");
+    $.easecubic(0.42,0.0,0.58,1.0,"cubic-ease-in-out");
+
     function makeLookup(func,steps) {
         var i;
         steps = steps || 101;
