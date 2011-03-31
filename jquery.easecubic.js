@@ -67,6 +67,7 @@
         }
     }
 
+    // From: http://www.netzgesta.de/dev/cubic-bezier-timing-function.html
     function cubicBezierAtPosition(t,P1x,P1y,P2x,P2y) {
         var x,y,k=((1-t)*(1-t)*(1-t));
         x=P1x*(3*t*t*(1-t))+P2x*(3*t*(1-t)*(1-t))+k;
