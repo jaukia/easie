@@ -34,7 +34,8 @@
         name = name || "cubic-"+Array.prototype.join.call(arguments,"-");
         if ( !$.easing[name] ) {
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
-                cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1);
+                // the duration is set to 1.0. this defines the precision of the bezier calculation.
+                cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1.0);
             });
     
             $.easing[easingName] = function(p, n, firstNum, diff) {
