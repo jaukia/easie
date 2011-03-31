@@ -31,10 +31,10 @@
 (function($) {
     "use strict";
 
-    $.easecubic = function(p1x,p1y,p2x,p2y) {
-        var easingName = Array.prototype.join.call(arguments);
+    $.easecubic = function(p1x,p1y,p2x,p2y,name) {
+        name = name || "cubic-"+Array.prototype.join.call(arguments,"-");
         duration = duration || 1;
-        if ( !$.easing[easingName] ) {
+        if ( !$.easing[name] ) {
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
                 cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1);
             });
