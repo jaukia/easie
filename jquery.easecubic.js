@@ -35,6 +35,7 @@
         if ( !$.easing[name] ) {
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
                 // the duration is set to 1.0. this defines the precision of the bezier calculation.
+                // with the lookup table, the precision could probably be increased without any big penalty.
                 cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1.0);
             });
     
