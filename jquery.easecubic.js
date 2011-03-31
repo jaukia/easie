@@ -59,7 +59,8 @@
             lookupTable[i] = func.call(i/(steps-1));
         }
         return function(p) {
-            var p0 = floor((steps-1)*p);
+            if(p0===1.0) return y1;
+            var p0 = Math.floor((steps-1)*p);
             var y1 = lookupTable[p0];
             var y2 = lookupTable[p0+1];
             return y1+(y2-y1)*((steps-1)*p-p0);
