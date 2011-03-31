@@ -1,8 +1,8 @@
-// example of use $(elem).animate( {top: 100}, $.eaze(.25,.1,.25,1) );
+// example of use $(elem).animate( {top: 100}, $.eazer(.25,.1,.25,1) );
 
 /*
- * jquery.eaze.js:
- * http://www.github.com/jaukia/eaze
+ * jquery.eazer.js:
+ * http://www.github.com/jaukia/eazer
  *
  * Version history:
  * 0.01 xxx
@@ -30,7 +30,7 @@
 (function($) {
     "use strict";
 
-    $.eaze = function(p1x,p1y,p2x,p2y,name) {
+    $.eazer = function(p1x,p1y,p2x,p2y,name) {
         name = name || "cubic-"+Array.prototype.join.call(arguments,"-");
         if ( !$.easing[name] ) {
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
@@ -46,11 +46,11 @@
         return easingName;
     }
 
-    $.eaze(0.0,0.0,1.0,1.0,  "cubic-linear");
-    $.eaze(0.25,0.1,0.25,1.0,"cubic-ease");
-    $.eaze(0.42,0.0,1.0,1.0, "cubic-ease-in");
-    $.eaze(0.0,0.0,0.58,1.0, "cubic-ease-out");
-    $.eaze(0.42,0.0,0.58,1.0,"cubic-ease-in-out");
+    $.eazer(0.0,0.0,1.0,1.0,  "cubic-linear");
+    $.eazer(0.25,0.1,0.25,1.0,"cubic-ease");
+    $.eazer(0.42,0.0,1.0,1.0, "cubic-ease-in");
+    $.eazer(0.0,0.0,0.58,1.0, "cubic-ease-out");
+    $.eazer(0.42,0.0,0.58,1.0,"cubic-ease-in-out");
 
     function makeLookup(func,steps) {
         var i;
