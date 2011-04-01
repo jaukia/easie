@@ -2,6 +2,7 @@
     <head>
     
         <title>jquery.easie.js</title>
+        
         <style type="text/css">
             html, body {
                 font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
@@ -14,7 +15,7 @@
             
             html {
                 height: 100%;
-                width: 680px;
+                width: 400px;
                 margin: 0 auto;
                 padding: 40px 0 100px 0;
                 /* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
@@ -38,7 +39,16 @@
 		        font-size:50px;
 		    }
         </style>
-    
+        
+        <script type="text/javascript" src="LIB/jquery-1.5.2.js"></script>
+        <script type="text/javascript" src="js/jquery.easie.js"></script>
+        
+        <script type="text/javascript">
+            
+            $(document).ready(function() {
+                $("html").animate({"width":700},1000,"easieEaseInOut");
+            });
+        </script>
     </head>
     <body>
     
@@ -52,7 +62,7 @@
             <li>You may tweak the parameters of the easings in any way you like</li>
             <li>Lookup tables make the implementation very fast!</li>
             <li>Fully compatible with Css3 animation easings</li>
-            <li>Only around 1.2kB minified (jQuery.easing.js is around 5kB)</li>
+            <li>Only around 0.6kB compressed and 1.2kB minified (jQuery.easing.js is around 5kB)</li>
          </ul>
      
     </body>

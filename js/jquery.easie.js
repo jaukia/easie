@@ -30,34 +30,36 @@
 (function($) {
     "use strict";
 
+    var prefix = "easie";
+
     $.easie = function(p1x,p1y,p2x,p2y,name) {
-        name = name || "easie-"+Array.prototype.join.call(arguments,"-");
+        name = name || prefix+"-"+Array.prototype.join.call(arguments,"-");
         if ( !$.easing[name] ) {
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
                 // the duration is set to 1.0. this defines the precision of the bezier calculation.
                 // with the lookup table, the precision could probably be increased without any big penalty.
-                cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1.0);
+                return cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1.0);
             });
     
-            $.easing[easingName] = function(p, n, firstNum, diff) {
-                return cubicBezierAtTimeLookup.apply(null, p);
+            $.easing[name] = function(p, n, firstNum, diff) {
+                return cubicBezierAtTimeLookup.call(null, p);
             } 
         }
-        return easingName;
+        return name;
     }
 
-    $.easie(0.0,0.0,1.0,1.0,  "easieLinear");
-    $.easie(0.25,0.1,0.25,1.0,"easieEase");
-    $.easie(0.42,0.0,1.0,1.0, "easieEaseIn");
-    $.easie(0.0,0.0,0.58,1.0, "easieEaseOut");
-    $.easie(0.42,0.0,0.58,1.0,"easieEaseInOut");
+    $.easie(0.0,0.0,1.0,1.0,  prefix+"Linear");
+    $.easie(0.25,0.1,0.25,1.0,prefix+"Ease");
+    $.easie(0.42,0.0,1.0,1.0, prefix+"EaseIn");
+    $.easie(0.0,0.0,0.58,1.0, prefix+"EaseOut");
+    $.easie(0.42,0.0,0.58,1.0,prefix+"EaseInOut");
 
     function makeLookup(func,steps) {
         var i;
         steps = steps || 101;
         var lookupTable = [];
         for(i=0;i<steps;i++) {
-            lookupTable[i] = func.call(i/(steps-1));
+            lookupTable[i] = func.call(null,i/(steps-1));
         }
         return function(p) {
             if(p0===1.0) return y1;
