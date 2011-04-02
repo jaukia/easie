@@ -1,4 +1,4 @@
-// example of use $(elem).animate( {top: 100}, $.easie(.25,.1,.25,1) );
+// example of use $(elem).animate( {top: 100}, $.easie(0.25,0.1,0.25,1.0) );
 
 /*
  * jquery.easie.js:
@@ -30,11 +30,17 @@
 (function($) {
     "use strict";
 
-    var prefix = "easie";
+    var prefix = "easie",
+        ease = "Ease",
+        easeIn = prefix+ease+"In",
+        easeOut = prefix+ease+"Out",
+        easeInOut = prefix+ease+"InOut",
+        names = ["Quad","Cubic","Quart","Sine","Expo","Circ"];
 
     $.easie = function(p1x,p1y,p2x,p2y,name) {
         name = name || prefix+"-"+Array.prototype.join.call(arguments,"-");
         if ( !$.easing[name] ) {
+            // around 40x faster with lookup than without it in FF4
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
                 // the duration is set to 1.0. this defines the precision of the bezier calculation.
                 // with the lookup table, the precision could probably be increased without any big penalty.
@@ -48,25 +54,59 @@
         return name;
     }
 
-    $.easie(0.0,0.0,1.0,1.0,  prefix+"Linear");
-    $.easie(0.25,0.1,0.25,1.0,prefix+"Ease");
-    $.easie(0.42,0.0,1.0,1.0, prefix+"EaseIn");
-    $.easie(0.0,0.0,0.58,1.0, prefix+"EaseOut");
-    $.easie(0.42,0.0,0.58,1.0,prefix+"EaseInOut");
+    var $easie = $.easie;
+
+    // default css3 easings
+
+    $easie(0.000, 0.000, 1.000, 1.000, prefix+"Linear");
+    $easie(0.250, 0.100, 0.250, 1.000, prefix+ease);
+    $easie(0.420, 0.000, 1.000, 1.000, easeIn);
+    $easie(0.000, 0.000, 0.580, 1.000, easeOut);
+    $easie(0.420, 0.000, 0.580, 1.000, easeInOut);
+
+    // approximated Penner equations, from:
+    // http://matthewlein.com/ceaser/
+    
+    $easie(0.550, 0.085, 0.680, 0.530, easeIn+names[0]);
+    $easie(0.550, 0.055, 0.675, 0.190, easeIn+names[1]);
+    $easie(0.895, 0.030, 0.685, 0.220, easeIn+names[2]);
+    $easie(0.755, 0.050, 0.855, 0.060, easeIn+names[3]);
+    $easie(0.470, 0.000, 0.745, 0.715, easeIn+names[4]);
+    $easie(0.950, 0.050, 0.795, 0.035, easeIn+names[5]);
+    $easie(0.600, 0.040, 0.980, 0.335, easeIn+names[6]);
+                    
+    $easie(0.250, 0.460, 0.450, 0.940, easeOut+names[0]);
+    $easie(0.215, 0.610, 0.355, 1.000, easeOut+names[1]);
+    $easie(0.165, 0.840, 0.440, 1.000, easeOut+names[2]);
+    $easie(0.230, 1.000, 0.320, 1.000, easeOut+names[3]);
+    $easie(0.390, 0.575, 0.565, 1.000, easeOut+names[4]);
+    $easie(0.190, 1.000, 0.220, 1.000, easeOut+names[5]);
+    $easie(0.075, 0.820, 0.165, 1.000, easeOut+names[6]);
+                    
+    $easie(0.455, 0.030, 0.515, 0.955, easeInOut+names[0]);
+    $easie(0.645, 0.045, 0.355, 1.000, easeInOut+names[1]);
+    $easie(0.770, 0.000, 0.175, 1.000, easeInOut+names[2]);
+    $easie(0.860, 0.000, 0.070, 1.000, easeInOut+names[3]);
+    $easie(0.445, 0.050, 0.550, 0.950, easeInOut+names[4]);
+    $easie(1.000, 0.000, 0.000, 1.000, easeInOut+names[5]);
+    $easie(0.785, 0.135, 0.150, 0.860, easeInOut+names[6]);
 
     function makeLookup(func,steps) {
         var i;
-        steps = steps || 101;
+        steps = steps || 100;
         var lookupTable = [];
-        for(i=0;i<steps;i++) {
-            lookupTable[i] = func.call(null,i/(steps-1));
+        for(i=0;i<(steps-1);i++) {
+            lookupTable.push(func.call(null,i/steps));
         }
         return function(p) {
-            if(p0===1.0) return y1;
-            var p0 = Math.floor((steps-1)*p);
+            if(p0===1) return y1;
+            var sp = steps*p;
+            // fast flooring, see
+            // http://stackoverflow.com/questions/2526682/why-is-javascripts-math-floor-the-slowest-way-to-calculate-floor-in-javascript
+            var p0 = sp|0;
             var y1 = lookupTable[p0];
             var y2 = lookupTable[p0+1];
-            return y1+(y2-y1)*((steps-1)*p-p0);
+            return y1+(y2-y1)*(sp-p0);
         }
     }
 
