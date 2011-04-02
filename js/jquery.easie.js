@@ -42,9 +42,10 @@
         if ( !$.easing[name] ) {
             // around 40x faster with lookup than without it in FF4
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
-                // the duration is set to 1.0. this defines the precision of the bezier calculation.
-                // with the lookup table, the precision could probably be increased without any big penalty.
-                return cubicBezierAtTime(p,p1x,p1y,p2x,p2y,1.0);
+                // the duration is set to 5.0. this defines the precision of the bezier calculation.
+                // the animation is ok for durations up to 5 secs with this.
+                // with the lookup table, the precision can be high without any big penalty.
+                return cubicBezierAtTime(p,p1x,p1y,p2x,p2y,5.0);
             });
     
             $.easing[name] = function(p, n, firstNum, diff) {
@@ -93,17 +94,17 @@
 
     function makeLookup(func,steps) {
         var i;
-        steps = steps || 100;
+        steps = steps || 101;
         var lookupTable = [];
-        for(i=0;i<(steps-1);i++) {
-            lookupTable.push(func.call(null,i/steps));
+        for(i=0;i<(steps+1);i++) {
+            lookupTable[i] = func.call(null,i/steps);
         }
         return function(p) {
-            if(p0===1) return y1;
+            if(p===1) return lookupTable[steps];
             var sp = steps*p;
             // fast flooring, see
             // http://stackoverflow.com/questions/2526682/why-is-javascripts-math-floor-the-slowest-way-to-calculate-floor-in-javascript
-            var p0 = sp|0;
+            var p0 = Math.floor(sp);
             var y1 = lookupTable[p0];
             var y2 = lookupTable[p0+1];
             return y1+(y2-y1)*(sp-p0);

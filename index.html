@@ -6,64 +6,92 @@
         <style type="text/css">
             html, body {
                 font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-                color: #333;
             }
+            
+            html {
+                background-color: #191919;
+                min-height:100%;
+		    }
             
             li {
                 margin-top:6px;
             }
             
-            html {
-                height: 100%;
-                width: 400px;
-                margin: 0 auto;
-                padding: 40px 0 100px 0;
-                /* change the box model to exclude the padding from the calculation of 100% height (IE8+) */
-                -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
-                box-sizing: border-box;
-		        background: #eee;
-		    }
-		    
-	        body {
-	            position: relative;
-	            min-height: 100%;
-		        margin: 0 0 40px;
-		        padding: 20px 20px 20px 100px;
-		        background-color: #white;
+	        section {
+	            width:600px;
+	            margin-bottom:0px;
+	            margin-top:80px;
+	            margin-left:auto;
+	            margin-right:auto;
+	            padding:40px;
+		        background-color: #444;
+		        opacity:0.0;
+		        -webkit-border-radius:4px;
+		        color:white;
 		    }
 		    
 		    h1 {
-		        margin-top:50px;
+		        margin-top:-15px;
 		        font-weight:300;
 		        font-size:50px;
 		    }
+		    
+		    #graph {
+		        margin-top:40px;
+		        padding:10px;
+		        background-color: #666;
+		        width:200px;
+		        height:200px;
+		        -webkit-border-radius:3px; 
+		    }
         </style>
         
-        <script type="text/javascript" src="LIB/jquery-1.5.2.js"></script>
+        <script type="text/javascript" src="lib/jquery-1.5.2.js"></script>
+        <script type="text/javascript" src="lib/raphael-min.js"></script>
         <script type="text/javascript" src="js/jquery.easie.js"></script>
         
         <script type="text/javascript">
             
             $(document).ready(function() {
-                $("html").animate({"width":700},1000,"easieEaseInOut");
+                $("section").animate({"opacity":1.0},1500,"easieEaseIn");
+                
+                var h = 200;
+                var w = 200;
+                var p = 10;
+                
+                var r = Raphael("graph", w, h);
+                
+                var func = $.easing.easieEaseInOut;
+                var count = 100;
+                var lineDesc = "M"+p+" "+p;
+                for(var i=0;i<(count+1);i++) {
+                    var x = i/count;
+                    var y = func(x,1,0,1);
+                    lineDesc += "L"+(p+(w-2*p)*x)+" "+(p+(h-2*p)*y);
+                }
+                console.log(lineDesc);
+                r.path(lineDesc).attr({stroke:"white","stroke-width":5,"stroke-linecap":"round"});
             });
+            
         </script>
     </head>
     <body>
-    
-        <h1>jquery.easie.js</h1>
-        
-        <p>Css3-like easing functions for jQuery</p>
-        
-        <p>Features:</p>
-        
-        <ul>
-            <li>You may tweak the parameters of the easings in any way you like</li>
-            <li>Lookup tables make the implementation very fast!</li>
-            <li>Fully compatible with Css3 animation easings</li>
-            <li>Less than 2kB minified (jQuery.easing.js is around 5kB)</li>
-         </ul>
-     
+        <section>
+            <h1>jquery.easie.js</h1>
+            
+            <p>Css3-like easing functions for jQuery</p>
+            
+            <ul>
+                <li>Tweak the parameters of the easings in any way you like</li>
+                <li>Fully compatible with Css3 animation easings</li>
+                <li>Small (less than 2kB minified, jQuery.easing.js is around 5kB)</li>
+                <li>Fast (thanks to lookup tables)</li>
+            </ul>
+            
+            <div id="graph">
+                
+            </div>
+            
+        </section>
     </body>
 </html>
