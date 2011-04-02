@@ -35,10 +35,10 @@
         easeIn = prefix+ease+"In",
         easeOut = prefix+ease+"Out",
         easeInOut = prefix+ease+"InOut",
-        names = ["Quad","Cubic","Quart","Sine","Expo","Circ"];
+        names = ["Quad","Cubic","Quart","Quint","Sine","Expo","Circ"];
 
     $.easie = function(p1x,p1y,p2x,p2y,name) {
-        name = name || prefix+"-"+Array.prototype.join.call(arguments,"-");
+        name = name || [prefix,p1x,p1y,p2x,p2y].join("-");
         if ( !$.easing[name] ) {
             // around 40x faster with lookup than without it in FF4
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
