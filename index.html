@@ -34,6 +34,7 @@
 		        margin-top:-15px;
 		        font-weight:300;
 		        font-size:50px;
+		        letter-spacing:1px;
 		    }
 		    
 		    #graph {
@@ -55,13 +56,17 @@
             $(document).ready(function() {
                 $("section").animate({"opacity":1.0},1500,"easieEaseIn");
                 
+                showGraph("easieEaseInOut");
+            });
+            
+            function showGraph(easingName) {
                 var h = 200;
                 var w = 200;
                 var p = 10;
                 
                 var r = Raphael("graph", w, h);
                 
-                var func = $.easing.easieEaseInOut;
+                var func = $.easing[easingName];
                 var count = 100;
                 var lineDesc = "M"+p+" "+p;
                 for(var i=0;i<(count+1);i++) {
@@ -71,7 +76,32 @@
                 }
                 console.log(lineDesc);
                 r.path(lineDesc).attr({stroke:"white","stroke-width":5,"stroke-linecap":"round"});
-            });
+                
+                var discattr = {fill: "#cb4b16", stroke: "none"};
+                
+                var controls = r.set(
+                    //r.path(path2).attr({stroke: "#ccc", "stroke-dasharray": ". "}),
+                    r.circle(p, p, 5).attr(discattr),
+                    r.circle(p, h-p, 5).attr(discattr),
+                    r.circle(w-p, p, 5).attr(discattr),
+                    r.circle(w-p, h-p, 5).attr(discattr)
+                );
+                
+                controls.drag(move, up);
+                
+                function move(dx, dy) {
+                    //this.update(dx - (this.dx || 0), dy - (this.dy || 0));
+                    var ncx = this.attr("cx") + dx - (this.dx || 0);
+                    var ncy = this.attr("cy") + dy - (this.dy || 0);
+                    
+                    this.attr({cx:ncx, cy:ncy});
+                    this.dx = dx;
+                    this.dy = dy;
+                }
+                function up() {
+                    this.dx = this.dy = 0;
+                }
+            }
             
         </script>
     </head>
@@ -82,10 +112,10 @@
             <p>Css3-like easing functions for jQuery</p>
             
             <ul>
-                <li>Tweak the parameters of the easings in any way you like</li>
-                <li>Fully compatible with Css3 animation easings</li>
-                <li>Small (less than 2kB minified, jQuery.easing.js is around 5kB)</li>
-                <li>Fast (thanks to lookup tables)</li>
+                <li>Tweak the shape of easings</li>
+                <li>Compatible with Css3 easings</li>
+                <li>Small (less than 2kB minified)</li>
+                <li>Fast (uses lookup tables)</li>
             </ul>
             
             <div id="graph">
