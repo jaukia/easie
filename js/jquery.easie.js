@@ -50,7 +50,8 @@
     
             $.easing[name] = function(p, n, firstNum, diff) {
                 return cubicBezierAtTimeLookup.call(null, p);
-            } 
+            }
+            $.easing[name].params = [p1x,p1y,p2x,p2y];
         }
         return name;
     }
