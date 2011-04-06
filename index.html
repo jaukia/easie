@@ -96,30 +96,62 @@
                 var p1 = [p+fullw*params[0], h-p-fullh*params[1]];
                 var p2 = [p+fullw*params[2], h-p-fullh*params[3]];
                 
+                var path1 = [["M",c1[0],c1[1]],["L",p1[0],p1[1]]];
+                var path2 = [["M",c2[0],c2[1]],["L",p2[0],p2[1]]];
+                
                 var lines = r.set(
-                    r.path("M"+c1[0]+" "+c1[1]+"L"+p1[0]+" "+p1[1]).attr(lineattr),
-                    r.path("M"+c2[0]+" "+c2[1]+"L"+p2[0]+" "+p2[1]).attr(lineattr)
+                    r.path(path1).attr(lineattr),
+                    r.path(path2).attr(lineattr)
                 );
                 
                 var controls = r.set(
-                    r.circle(p1[0], p1[1], 5).attr(selectattr),
-                    r.circle(p2[0], p2[1], 5).attr(selectattr)
+                    r.circle(p1[0], p1[1], 6).attr(selectattr),
+                    r.circle(p2[0], p2[1], 6).attr(selectattr)
                 );
                 
-                controls.drag(move, up);
+                var updateValues = function(pos,xval,yval) {
+                    console.log(pos,xval,yval);
+                }
                 
-                function move(dx, dy) {
-                    //this.update(dx - (this.dx || 0), dy - (this.dy || 0));
-                    var ncx = this.attr("cx") + dx - (this.dx || 0);
-                    var ncy = this.attr("cy") + dy - (this.dy || 0);
-                    
+                controls[0].update = function(ncx,ncy) {
                     this.attr({cx:ncx, cy:ncy});
-                    this.dx = dx;
-                    this.dy = dy;
+                    path1[1][1] = ncx;
+                    path1[1][2] = ncy;
+                    lines[0].attr({path: path1});
+                    updateValues(0,(ncx-p)/(w-2*p),1-(ncy-p)/(h-2*p));
                 }
-                function up() {
-                    this.dx = this.dy = 0;
+                
+                controls[1].update = function(ncx,ncy) {
+                    this.attr({cx:ncx, cy:ncy});
+                    path2[1][1] = ncx;
+                    path2[1][2] = ncy;
+                    lines[1].attr({path: path2});
+                    updateValues(1,(ncx-p)/(w-2*p),1-(ncy-p)/(h-2*p));
                 }
+                
+                controls.drag(
+                    function(dx, dy) {
+                        var ncx = (this.curx || this.attr("cx")) + dx - (this.dx || 0);
+                        var ncy = (this.cury || this.attr("cy")) + dy - (this.dy || 0);
+                        
+                        this.curx = ncx;
+                        this.cury = ncy;
+                        
+                        if(ncx>(w-p)) ncx = w-p;
+                        if(ncx<p) ncx = p;
+                        if(ncy>(h-p)) ncy = h-p;
+                        if(ncy<p) ncy = p;
+                        
+                        this.update(ncx,ncy);
+                        
+                        this.dx = dx;
+                        this.dy = dy;
+                    },
+                    function() {
+                        this.dx = 0;
+                        this.dy = 0;
+                    }
+                );
             }
             
         </script>
