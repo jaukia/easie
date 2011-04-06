@@ -46,6 +46,13 @@
 		        height:200px;
 		        -webkit-border-radius:3px;
 		    }
+		    
+		    #easingSelector {
+		        float:right;
+		        width:200px;
+                margin-right:100px;
+		        height:10px;
+		    }
         </style>
         
         <script type="text/javascript" src="lib/jquery-1.5.2.js"></script>
@@ -65,6 +72,17 @@
                 var w = 200;
                 var p = 10;
                 
+                
+                $list = $("#easingSelector");
+                $.each($.easing,function(key) {
+                    if(key.indexOf("easie")!=-1) {
+                        $("<option>"+key+"</option>").appendTo($list);
+                    }
+                });
+                $list.change(function() {
+                    console.log("value changed");
+                });
+                
                 var r = Raphael("graph", w, h);
                 
                 var func = $.easing[easingName];
@@ -73,19 +91,20 @@
                 var fullh = (h-2*p);
                 var fullw = (w-2*p);
                 
-                var count = 100;
-                var lineDesc = "M"+p+" "+(h-p);
-                for(var i=0;i<(count+1);i++) {
-                    var x = i/count;
-                    var y = func(x,1,0,1);
-                    lineDesc += "L"+(p+fullw*x)+" "+(h-p-fullh*y);
+                function makePath(funcIn) {
+                    var count = 100;
+                    var lineDesc = "M"+p+" "+(h-p);
+                    for(var i=0;i<(count+1);i++) {
+                        var x = i/count;
+                        var y = funcIn(x,1,0,1);
+                        lineDesc += "L"+(p+fullw*x)+" "+(h-p-fullh*y);
+                    }
+                    return lineDesc;
                 }
-                console.log(lineDesc);
-                r.path(lineDesc).attr({stroke:"white","stroke-width":5,"stroke-linecap":"round"});
                 
                 var endattr = {fill: "#ffffff", stroke: "none"};
                 var selectattr = {fill: "#cb4b16", stroke: "none"};
-                var lineattr = {stroke:"white","stroke-dasharray": ".","stroke-width":2,"stroke-linecap":"round"};
+                var lineattr = {stroke:"#333","stroke-dasharray": ".","stroke-width":2,"stroke-linecap":"round"};
                 
                 var c1 = [p, h-p];
                 var c2 = [w-p, p];
@@ -104,13 +123,24 @@
                     r.path(path2).attr(lineattr)
                 );
                 
+                var pathelem = r.path(makePath(func)).attr({stroke:"white","stroke-width":5,"stroke-linecap":"round"});
+                
                 var controls = r.set(
                     r.circle(p1[0], p1[1], 6).attr(selectattr),
                     r.circle(p2[0], p2[1], 6).attr(selectattr)
                 );
                 
                 var updateValues = function(pos,xval,yval) {
-                    console.log(pos,xval,yval);
+                    if(pos==0) {
+                        params[0] = xval;
+                        params[1] = yval;
+                    } else {
+                        params[2] = xval;
+                        params[3] = yval;
+                    }
+                    var name = $.easie(params[0],params[1],params[2],params[3],"tmpDemoEasing",true);
+                    func = $.easing[name];
+                    pathelem.attr({path:makePath(func)});
                 }
                 
                 controls[0].update = function(ncx,ncy) {
@@ -148,6 +178,9 @@
                         this.dy = dy;
                     },
                     function() {
+                        this.curx = this.attr("cx");
+                        this.cury = this.attr("cy");
+                        
                         this.dx = 0;
                         this.dy = 0;
                     }
@@ -160,7 +193,7 @@
         <section>
             <h1>jquery.easie.js</h1>
             
-            <p>Css3-like easing functions for jQuery</p>
+            <p>Css3-like easing functions  jQuery</p>
             
             <ul>
                 <li>Tweak the shape of easings</li>
@@ -168,6 +201,8 @@
                 <li>Small (less than 2kB minified)</li>
                 <li>Fast (uses lookup tables)</li>
             </ul>
+            
+            <select id="easingSelector"></select>
             
             <div id="graph">
                 

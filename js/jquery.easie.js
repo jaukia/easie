@@ -37,9 +37,9 @@
         easeInOut = prefix+ease+"InOut",
         names = ["Quad","Cubic","Quart","Quint","Sine","Expo","Circ"];
 
-    $.easie = function(p1x,p1y,p2x,p2y,name) {
+    $.easie = function(p1x,p1y,p2x,p2y,name,forceUpdate) {
         name = name || [prefix,p1x,p1y,p2x,p2y].join("-");
-        if ( !$.easing[name] ) {
+        if ( !$.easing[name] || forceUpdate ) {
             // around 40x faster with lookup than without it in FF4
             var cubicBezierAtTimeLookup = makeLookup(function(p) {
                 // the duration is set to 5.0. this defines the precision of the bezier calculation.
