@@ -72,21 +72,29 @@
                 var w = 200;
                 var p = 10;
                 
-                
                 $list = $("#easingSelector");
                 $.each($.easing,function(key) {
                     if(key.indexOf("easie")!=-1) {
-                        $("<option>"+key+"</option>").appendTo($list);
+                        $('<option>'+key+'<'+'/option>').appendTo($list);
                     }
                 });
-                $list.change(function() {
-                    console.log("value changed");
+                $('<option value="custom" disabled="true">'+'custom easing'+'<'+'/option>').appendTo($list);
+                
+                $list.change(function(val) {
+                    var easingVal = $(this).val();
+                    func = $.easing[easingVal];
+                    if(!func) return;
+                    params = func.params.slice(0);
+                    pathelem.attr({path:makePath(func)});
+                    controls[0].update(p+fullw*params[0], h-p-fullh*params[1]);
+                    controls[1].update(p+fullw*params[2], h-p-fullh*params[3]);
                 });
+                
                 
                 var r = Raphael("graph", w, h);
                 
                 var func = $.easing[easingName];
-                var params = func.params;
+                var params = func.params.slice(0);
                 
                 var fullh = (h-2*p);
                 var fullw = (w-2*p);
@@ -131,6 +139,11 @@
                 );
                 
                 var updateValues = function(pos,xval,yval) {
+                    // set precision
+                    xval = Math.round(xval*1000)/1000;
+                    yval = Math.round(yval*1000)/1000;
+                        
+                        
                     if(pos==0) {
                         params[0] = xval;
                         params[1] = yval;
@@ -141,6 +154,19 @@
                     var name = $.easie(params[0],params[1],params[2],params[3],"tmpDemoEasing",true);
                     func = $.easing[name];
                     pathelem.attr({path:makePath(func)});
+                    
+                    var match;
+                    $.each($.easing,function(key) {
+                       if(key.indexOf("easie")!=-1) {
+                           var ps = $.easing[key].params;
+                           if(ps[0]===params[0] && ps[1] === params[1] && ps[2] === params[2] && ps[3] === params[3]) {
+                               match = key;
+                           }
+                       }
+                    });
+                    if(!match) match = "custom";
+                    $list.val(match);
+                    console.log(match, params.join(","));
                 }
                 
                 controls[0].update = function(ncx,ncy) {
