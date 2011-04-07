@@ -193,8 +193,10 @@
                         cssContent += "cubic-bezier("+params.join(",")+")";
                     } else {
                         textContent += "\""+match+"\"";
-                        if($.inArray(match,["EasieEaseIn","EasieEaseOut","EasieEaseInOut","EasieLinear"])) {
+                        if($.inArray(match,["easieEase","easieEaseIn","easieEaseOut","easieEaseInOut","easieLinear"]) != -1) {
                             cssContent += unCamelCase(match);
+                        } else {
+                            cssContent += "cubic-bezier("+params.join(",")+")";
                         }
                     }
                     textContent += ");";
