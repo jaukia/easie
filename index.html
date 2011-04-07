@@ -48,10 +48,21 @@
 		    }
 		    
 		    #easingSelector {
-		        float:right;
 		        width:200px;
-                margin-right:100px;
-		        height:10px;
+                height:10px;
+		    }
+		    
+		    .code {
+		         color: #268bd2;
+		         font-size:12px;
+		         margin-top:10px;
+		    }
+		    
+		    .codeBox {
+		        float: right;
+		        width:340px;
+		        clear:both;
+		        margin-right:0px;
 		    }
         </style>
         
@@ -78,7 +89,7 @@
                         $('<option>'+key+'<'+'/option>').appendTo($list);
                     }
                 });
-                $('<option value="custom" disabled="true">'+'custom easing'+'<'+'/option>').appendTo($list);
+                $('<option value="custom" disabled="true">'+'(custom easing)'+'<'+'/option>').appendTo($list);
                 
                 $list.change(function(val) {
                     var easingVal = $(this).val();
@@ -142,15 +153,15 @@
                     // set precision
                     xval = Math.round(xval*1000)/1000;
                     yval = Math.round(yval*1000)/1000;
-                        
-                        
-                    if(pos==0) {
+                       
+                    if(pos===0) {
                         params[0] = xval;
                         params[1] = yval;
-                    } else {
+                    } else if(pos===1) {
                         params[2] = xval;
                         params[3] = yval;
                     }
+                    
                     var name = $.easie(params[0],params[1],params[2],params[3],"tmpDemoEasing",true);
                     func = $.easing[name];
                     pathelem.attr({path:makePath(func)});
@@ -166,8 +177,34 @@
                     });
                     if(!match) match = "custom";
                     $list.val(match);
-                    console.log(match, params.join(","));
+                    
+                    var cssContent = "";
+                    var cssPrefix1 = "-webkit-transition-timing-function: <br/>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    var cssPrefix2 = "-moz-transition-timing-function: <br/>&nbsp;&nbsp;&nbsp;&nbsp;";
+                    
+                    var textContent = "$(\"#box\").animate({top:100}, ";
+                    
+                    var unCamelCase = function(text) {
+                        return text.replace("easie","").replace(/([A-Z])/g,"-$1").toLowerCase().substr(1);
+                    }
+                    
+                    if(match === "custom") {
+                        textContent += "$.easie("+params.join(",");
+                        cssContent += "cubic-bezier("+params.join(",")+")";
+                    } else {
+                        textContent += "\""+match+"\"";
+                        if($.inArray(match,["EasieEaseIn","EasieEaseOut","EasieEaseInOut","EasieLinear"])) {
+                            cssContent += unCamelCase(match);
+                        }
+                    }
+                    textContent += ");";
+                    cssContent += ";";
+                    
+                    $("#easieCode").html(textContent);
+                    $("#cssCode").html(cssPrefix1+cssContent+"<br />"+cssPrefix2+cssContent);
                 }
+                
+                updateValues();
                 
                 controls[0].update = function(ncx,ncy) {
                     this.attr({cx:ncx, cy:ncy});
@@ -228,11 +265,25 @@
                 <li>Fast (uses lookup tables)</li>
             </ul>
             
-            <select id="easingSelector"></select>
+            <div class="codeBox">
+                
+                <p>Select easing</p>
+                
+                <select id="easingSelector"></select>
+                
+                <p>jQuery.easie code</p>
+                
+                <div class="code" id="easieCode"></div>
+                
+                <p>Css3 code</p>
+                
+                <div class="code" id="cssCode"></div>
+            </div>
             
             <div id="graph">
                 
             </div>
+            
             
         </section>
     </body>
