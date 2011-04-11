@@ -1,11 +1,14 @@
-// example of use $(elem).animate( {top: 100}, $.easie(0.25,0.1,0.25,1.0) );
-
+/*
+ * Example usage:
+ * $(elem).animate( {top: 100}, $.easie(0.25,0.1,0.25,1.0) );
+ */
+ 
 /*
  * jquery.easie.js:
  * http://www.github.com/jaukia/easie
  *
  * Version history:
- * 0.01 xxx
+ * 1.0 Initial public version
  *
  * LICENCE INFORMATION:
  *
