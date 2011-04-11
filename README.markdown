@@ -1,12 +1,12 @@
 Installing jquery.easie.js
-==========================
+--------------------------
 
 There is just one step:
 
 Copy the file "js/jquery.easie.js" to your project (or the minified version in "build/jquery.easie-min.js"), and you are done!
 
 Using jquery.easie.js
-=====================
+---------------------
 
 The syntax is easy.
 
