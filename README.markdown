@@ -20,4 +20,4 @@ Or, define your own easing with css3 compatible cubic-bezier parameters:
 
 See the web site for more info:
 
-http://janne.aukia.com/easie/
+[http://janne.aukia.com/easie/](http://janne.aukia.com/easie/)
