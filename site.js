@@ -1,10 +1,12 @@
 $(document).ready(function() {
-    $(".main").animate({"opacity":1.0},1500,"easieEaseIn");
+    // animate main box when loading the page
+    $(".main").css({"opacity":0.0}).animate({"opacity":1.0},600,"easieEaseIn");
     
-    showGraph("easieEaseInOut");
+    // setup interaction on the web page (and set the initial easing)
+    setupInteraction("easieEaseInOut");
 });
 
-function showGraph(easingName) {
+function setupInteraction(easingName) {
     var h = 200;
     var w = 200;
     var p = 10;
