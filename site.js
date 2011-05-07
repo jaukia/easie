@@ -133,7 +133,7 @@ function setupInteraction(easingName) {
                 cssContent += "cubic-bezier("+params.join(",")+")";
             }
         }
-        textContent += "));";
+        textContent += ");";
         cssContent += ";";
         
         $("#easieCode").html(textContent);
