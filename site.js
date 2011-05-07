@@ -123,7 +123,7 @@ function setupInteraction(easingName) {
         }
         
         if(match === "custom") {
-            textContent += "$.easie("+params.join(",");
+            textContent += "$.easie("+params.join(",")+")";
             cssContent += "cubic-bezier("+params.join(",")+")";
         } else {
             textContent += "\""+match+"\"";
