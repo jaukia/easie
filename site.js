@@ -116,7 +116,7 @@ function setupInteraction(easingName) {
         var cssPrefix1 = "-webkit-transition-timing-function: <br/>&nbsp;&nbsp;&nbsp;&nbsp;";
         var cssPrefix2 = "-moz-transition-timing-function: <br/>&nbsp;&nbsp;&nbsp;&nbsp;";
         
-        var textContent = "$(\"#box\").animate({top:100}, ";
+        var textContent = "$(\"#box\").animate({left:200}, ";
         
         var unCamelCase = function(text) {
             return text.replace("easie","").replace(/([A-Z])/g,"-$1").toLowerCase().substr(1);
@@ -133,7 +133,7 @@ function setupInteraction(easingName) {
                 cssContent += "cubic-bezier("+params.join(",")+")";
             }
         }
-        textContent += ");";
+        textContent += "));";
         cssContent += ";";
         
         $("#easieCode").html(textContent);
