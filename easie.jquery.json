@@ -16,14 +16,6 @@
         "jquery": ">=1.5.2"
     },
     
-    "maintainers": [
-        {
-            "name": "Janne Aukia",
-            "email": "janne@aukia.com",
-            "url": "http://janne.aukia.com/"
-        }
-    ],
-    
     "homepage": "http://janne.aukia.com/easie",
     
     "author": {
