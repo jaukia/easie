@@ -8,7 +8,8 @@
  * http://www.github.com/jaukia/easie
  *
  * Version history:
- * 1.0 Initial public version
+ * 1.0.1 Semver versioning for jQuery plugins repository
+ * 1.0.0 Initial public version
  *
  * LICENCE INFORMATION:
  *
